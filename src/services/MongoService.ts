@@ -10,6 +10,10 @@ abstract class MongoService<T> {
   public async create(obj: T): Promise<T | null | ServiceError> {
     return this.model.create(obj);
   }
+
+  public async read(): Promise<T[]> {
+    return this.model.read();
+  }
 }
 
 export default MongoService;

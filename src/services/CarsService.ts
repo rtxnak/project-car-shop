@@ -14,6 +14,10 @@ class CarsService extends MongoService<Car> {
     }
     return this.model.create(obj);
   };
+
+  public async read(): Promise<Car[]> {
+    return this.model.read();
+  }
 }
 
 export default CarsService;
