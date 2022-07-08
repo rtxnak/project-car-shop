@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import mongoose from 'mongoose';
 import sinon from 'sinon';
 import CarsService from '../../../services/CarsService';
-import { newCar, newCarResponse, newCarInvalid } from '../mocks/car.mock'
+import { newCar, newCarResponse, newCarInvalid, carArrayResponse } from '../mocks/car.mock'
 
 describe('CarService tests', () => {
 
@@ -24,6 +24,22 @@ describe('CarService tests', () => {
     it('return the correct response on FAILURE', async () => {
       const car = await carService.create(newCarInvalid as any);
       expect(car).to.have.all.keys(['error']);
+    })
+  });
+
+  describe('read function test', () => {
+    const carService = new CarsService();
+    before(async () => {
+      sinon.stub(mongoose.Model, 'find').resolves(carArrayResponse);
+    })
+
+    after(() => {
+      sinon.restore();
+    })
+
+    it('return the correct response on SUCCESSFUL', async () => {
+      const car = await carService.read();
+      expect(car).to.be.equal(carArrayResponse);
     })
   })
 })
