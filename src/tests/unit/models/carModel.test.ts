@@ -37,6 +37,22 @@ describe('CarModel tests', () => {
       expect(car).to.be.equal(carArrayResponse);
     })
   })
+
+  describe('readOne function test', () => {
+    const carModel = new CarModel();
+    before(async () => {
+      sinon.stub(mongoose.Model, 'findOne').resolves(newCarResponse);
+    })
+
+    after(() => {
+      sinon.restore();
+    })
+
+    it('return the correct response', async () => {
+      const car = await carModel.readOne(newCarResponse._id);
+      expect(car).to.be.equal(newCarResponse);
+    })
+  })
 })
 
 // como fazer stub com mongoose https://stackoverflow.com/questions/11318972/stubbing-a-mongoose-model-with-sinon
