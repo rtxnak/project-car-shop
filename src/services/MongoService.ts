@@ -14,6 +14,11 @@ abstract class MongoService<T> {
   public async read(): Promise<T[]> {
     return this.model.read();
   }
+
+  public async readOne(id: string): 
+  Promise<T | null | undefined | ServiceError> {
+    return this.model.readOne(id);
+  }
 }
 
 export default MongoService;

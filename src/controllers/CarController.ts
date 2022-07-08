@@ -1,7 +1,4 @@
-import {
-  // Request,
-  Response,
-} from 'express';
+import { Request, Response } from 'express';
 import MongoController,
 { RequestWithBody, ResponseError } from './MongoController';
 import CarsService from '../services/CarsService';
@@ -36,6 +33,25 @@ export default class CarController extends MongoController<Car> {
       return res.status(201).json(car);
     } catch (err) {
       return res.status(500).json({ error: this.errors.internal });
+    }
+  };
+
+  readOne = async (
+    req: Request<{ id: string; }>,
+    res: Response<Car | ResponseError>,
+  ): Promise<typeof res> => {
+    const { id } = req.params;
+    try {
+      const car = await this.service.readOne(id);
+      if (car === undefined) {
+        return res.status(400).json({ error: this.errors.badLength });
+      }
+      if (!car) {
+        return res.status(404).json({ error: this.errors.notFound });
+      }
+      return res.status(200).json(car);
+    } catch (error) {
+      return res.status(500).json({ error: this.errors.badRequest });
     }
   };
 }

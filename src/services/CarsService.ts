@@ -3,6 +3,8 @@ import { Car, CarSchema } from '../interfaces/CarInterface';
 import CarModel from '../models/Car';
 
 class CarsService extends MongoService<Car> {
+  private idLength = 24;
+  
   constructor(model = new CarModel()) {
     super(model);
   }
@@ -17,6 +19,12 @@ class CarsService extends MongoService<Car> {
 
   public async read(): Promise<Car[]> {
     return this.model.read();
+  }
+
+  public async readOne(id: string): 
+  Promise<Car | null | undefined | ServiceError> {
+    if (id.length !== this.idLength) return undefined;
+    return this.model.readOne(id);
   }
 }
 

@@ -1,4 +1,4 @@
-import { Model as M, Document } from 'mongoose';
+import { Model as M, Document, isValidObjectId } from 'mongoose';
 import { Model } from '../interfaces/ModelInterface';
 
 abstract class MongoModel<T> implements Model<T> {
@@ -8,8 +8,10 @@ abstract class MongoModel<T> implements Model<T> {
 
   read = async (): Promise<T[]> => this.model.find();
 
-  readOne = async (id: string): Promise<T | null> =>
-    this.model.findOne({ _id: id });
+  readOne = async (id: string): Promise<T | null> => {
+    if (!isValidObjectId(id)) return null;
+    return this.model.findOne({ _id: id });
+  };
 
   update = async (id: string, obj: T): Promise<T | null> =>
     this.model

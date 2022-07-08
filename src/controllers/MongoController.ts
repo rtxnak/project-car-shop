@@ -14,6 +14,7 @@ enum ControllerErrors {
   notFound = 'Object not found',
   requiredId = 'Id is required',
   badRequest = 'Bad request',
+  badLength = 'Id must have 24 hexadecimal characters',
 }
 
 abstract class MongoController<T> {
@@ -39,6 +40,11 @@ abstract class MongoController<T> {
       return res.status(500).json({ error: this.errors.internal });
     }
   };
+
+  abstract readOne(
+    req: Request<{ id: string; }>,
+    res: Response<T | ResponseError>,
+  ): Promise<typeof res>;
 }
 
 export default MongoController;
