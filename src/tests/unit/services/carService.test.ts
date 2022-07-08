@@ -41,5 +41,26 @@ describe('CarService tests', () => {
       const car = await carService.read();
       expect(car).to.be.equal(carArrayResponse);
     })
+  });
+
+  describe('readOne function test', () => {
+    const carService = new CarsService();
+    before(async () => {
+      sinon.stub(mongoose.Model, 'findOne').resolves(newCarResponse);
+    })
+
+    after(() => {
+      sinon.restore();
+    })
+
+    it('return the correct response on SUCCESSFUL', async () => {
+      const car = await carService.readOne(newCarResponse._id);
+      expect(car).to.be.equal(newCarResponse);
+    });
+
+    it('return the correct response on FAILURE', async () => {
+      const car = await carService.readOne('wrong_id');
+      expect(car).to.be.equal(undefined);
+    });
   })
 })
