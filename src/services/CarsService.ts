@@ -26,6 +26,16 @@ class CarsService extends MongoService<Car> {
     if (id.length !== this.idLength) return undefined;
     return this.model.readOne(id);
   }
+
+  public async update(id: string, obj: Car):
+  Promise<Car | null | undefined | ServiceError | string> {
+    if (id.length !== this.idLength) return 'badIdLenght';
+    const parsed = CarSchema.safeParse(obj);
+    if (!parsed.success) {
+      return undefined;
+    }
+    return this.model.update(id, obj);
+  }
 }
 
 export default CarsService;

@@ -54,4 +54,25 @@ export default class CarController extends MongoController<Car> {
       return res.status(500).json({ error: this.errors.badRequest });
     }
   };
+
+  update = async (
+    req: RequestWithBody<Car>,
+    res: Response<Car | ResponseError>,
+  ): Promise<typeof res> => {
+    const { id } = req.params;
+    const { body } = req;
+    try {
+      const car = await this.service.update(id, body);
+      if (car === 'badIdLenght') {
+        return res.status(400).json({ error: this.errors.badLength });
+      }
+      if (car === undefined) {
+        return res.status(400).json({ error: this.errors.badRequest });
+      }
+      if (!car) return res.status(404).json({ error: this.errors.notFound });
+      return res.status(200).json(car as Car);
+    } catch (error) {
+      return res.status(500).json({ error: this.errors.badRequest });
+    }
+  };
 }
