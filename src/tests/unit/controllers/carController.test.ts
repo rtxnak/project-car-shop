@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { Request, Response } from 'express';
 import CarController from '../../../controllers/CarController';
-import { newCar, newCarResponse, newCarInvalidResponse } from '../mocks/car.mock';
+import { newCar, newCarResponse, newCarInvalidResponse, carArrayResponse } from '../mocks/car.mock';
 
 
 describe('CarController tests', () => {
@@ -77,5 +77,27 @@ describe('CarController tests', () => {
       })
     })
 
+  })
+
+  describe('read function test', () => {
+    const carController = new CarController();
+    const req = {} as Request;
+    const res = {} as Response;
+    before(async () => {
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns(res);
+      sinon.stub(carController.service, 'read').resolves(carArrayResponse);
+    })
+
+    after(() => {
+      sinon.restore();
+    })
+
+    it('return status 200, and correct car json on SUCCESS', async () => {
+      await carController.read(req, res);
+
+      expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith(carArrayResponse)).to.be.true;
+    })
   })
 })
