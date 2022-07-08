@@ -29,6 +29,29 @@ export const newCarInvalid = {
   seatsQty: "4",
 }
 
+export const carArrayResponse = [
+  {
+    model: 'Uno da Escada',
+    year: 1963,
+    color: 'red',
+    status: true,
+    buyValue: 3500,
+    seatsQty: 2,
+    doorsQty: 2,
+    _id: '3ec6g8f8a9d4h4122l000008'
+  },
+  {
+    model: 'Ford',
+    year: 2015,
+    color: 'white',
+    status: true,
+    buyValue: 35000,
+    doorsQty: 4,
+    seatsQty: 4,
+    _id: '2eb6e8e8e9b6f4194e000009',
+  }
+]
+
 export const newCarInvalidResponse = {
   error: {
     issues: [
